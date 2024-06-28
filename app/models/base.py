@@ -15,13 +15,9 @@ class BaseModel(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.current_timestamp()
-    )
+        DateTime(timezone=True), server_default=func.current_timestamp())
 
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.current_timestamp(),
-        onupdate=func.current_timestamp()
-    )
+        DateTime(timezone=True), server_default=func.current_timestamp(), onupdate=func.current_timestamp())
