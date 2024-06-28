@@ -7,8 +7,8 @@ usage() {
     echo "  -p PORT        Set the port number (default: 8000)"
     echo "  -h             Display this help message"
     echo
-    echo "Note: This script looks for environment-specific .env files in the config directory."
-    echo "      For example, for the 'prod' environment, it will use 'config/.env.prod' if it exists."
+    echo "Note: This script looks for environment-specific .env files in the env directory."
+    echo "      For example, for the 'prod' environment, it will use 'env/.env.prod' if it exists."
     exit 1
 }
 
@@ -40,7 +40,7 @@ done
 cd "$(dirname "$0")"/..
 
 # Check if a .env file exists for the specified environment
-ENV_FILE="config/.env.${ENV_NAME}"
+ENV_FILE="env/.env.${ENV_NAME}"
 if [ -f "$ENV_FILE" ]; then
     echo "Using environment file: $ENV_FILE"
     set -a
