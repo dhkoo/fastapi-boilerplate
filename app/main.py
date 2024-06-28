@@ -1,13 +1,14 @@
-from fastapi import FastAPI, status
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.middleware.cors import CORSMiddleware
-
+from app.databases.rdb import get_db
 from app.schemas.base import ResponseBase
-
+from app.api import user
 
 app = FastAPI()
 
 origins = ["*"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -15,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user.router, prefix="/api")
 
 
 @app.get("/")
@@ -27,9 +30,19 @@ async def root():
     response_model=ResponseBase,
     description="Health Check API",
 )
-async def health_check() -> ResponseBase:
+async def health_check():
     return ResponseBase(
-        code=status.HTTP_200_OK,
+        code=200,
         message="Server Alive",
         data={"status": "alive"},
     )
+
+
+@app.get("/db-check")
+async def db_check(db: AsyncSession = Depends(get_db)):
+    try:
+        await db.execute(text("SELECT 1"))
+        return {"status": "ok", "message": "Database connection successful"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Database connection failed: {str(e)}")
