@@ -42,7 +42,11 @@ async def health_check():
 async def db_check(db: AsyncSession = Depends(get_db)):
     try:
         await db.execute(text("SELECT 1"))
-        return {"status": "ok", "message": "Database connection successful"}
+        return ResponseBase(
+            code=200,
+            message="Database connection successful",
+            data={"status": "ok"},
+        )
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Database connection failed: {str(e)}")
