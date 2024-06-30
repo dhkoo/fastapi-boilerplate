@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
-from typing import List, Optional
+from typing import List
 
-from app.models.user import User
+from app.models import User
 
 
 class UserRepository:

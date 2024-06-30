@@ -1,6 +1,6 @@
 from uuid import UUID
-from typing import List, Optional
-from app.models.user import User
+from typing import List
+from app.models import User
 from app.repositories.user import UserRepository
 
 
