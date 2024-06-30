@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")/.." || exit
 
-ENV_FILE="./env/.env.local"
+ENV_FILE=".env"
 
 if [ ! -f "$ENV_FILE" ]; then
     echo "Error: Environment file $ENV_FILE not found."
