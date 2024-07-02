@@ -4,6 +4,13 @@ fastapi-boilerplate is a boilerplate that can serve as a base for FastAPI with P
 
 ## 🚀 Getting Started
 
+### Setting Local Environment
+
+```bash
+$ python -m venv .venv
+$ source source .venv/bin/activate
+```
+
 ### Install package and set environment variables
 
 ```bash
