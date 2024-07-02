@@ -1,22 +1,25 @@
+from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from uuid import UUID
 from typing import Optional
 
+from app.schemas.base import ResponseBaseModel
 
-class UserBase(BaseModel):
+
+class ResponseUserDto(BaseModel):
+    id: UUID
     email: EmailStr
     social_id: str
     social_provider: str
     name: Optional[str] = None
     profile_image_url: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
 
 
-class UserCreate(UserBase):
-    pass
+class ResponseUser(ResponseBaseModel):
+    data: ResponseUserDto
 
 
-class UserResponse(UserBase):
-    id: UUID
-
-    class Config:
-        from_attributes = True
+class ResponseUserList(ResponseBaseModel):
+    data: list[ResponseUserDto]

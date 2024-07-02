@@ -1,29 +1,18 @@
-from uuid import UUID, uuid4
 from typing import List
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import User
+import app.utils.repo_utils as utils
 
 
 class UserRepository:
-    def __init__(self):
-        self.users = [
-            User(
-                id=uuid4(),
-                email="user1@example.com",
-                social_id="12345",
-                social_provider="google",
-                name="User One",
-                profile_image_url="https://example.com/user1.jpg"
-            ),
-            User(
-                id=uuid4(),
-                email="user2@example.com",
-                social_id="67890",
-                social_provider="facebook",
-                name="User Two",
-                profile_image_url="https://example.com/user2.jpg"
-            )
-        ]
+    def __init__(self, db: AsyncSession):
+        self.db = db
 
-    async def get_all(self) -> List[User]:
-        return self.users
+    async def get_users(self, page: int, limit: int) -> List[User] | None:
+        return await utils.get_record_list(
+            self.db,
+            User,
+            page,
+            limit,
+        )
