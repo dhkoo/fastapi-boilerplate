@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 
 class ResponseBaseModel(BaseModel):
     code: int = Field(title="응답 코드", example=200)
-    message: str = Field(title="응답 메시지", example="")
+    message: str = Field(title="응답 메시지", example="success")
 
 
 class ResponseBase(ResponseBaseModel):
