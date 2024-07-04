@@ -3,8 +3,10 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.middleware.cors import CORSMiddleware
 from app.databases.rdb import get_db
+from app.dependencies import get_current_user
 from app.schemas.base import ResponseBase
 from app.api import user
+
 
 app = FastAPI()
 
@@ -23,6 +25,17 @@ app.include_router(user.router)
 @app.get("/")
 async def root():
     return {"message": "ok"}
+
+
+@app.get("/auth-check")
+async def root(
+    current_user: str = Depends(get_current_user),
+):
+    return ResponseBase(
+        code=200,
+        message="Authenticated",
+        data={"user": current_user},
+    )
 
 
 @app.get(
