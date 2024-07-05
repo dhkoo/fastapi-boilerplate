@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import User
@@ -12,7 +12,7 @@ class UserRepository:
     async def create_user(self, user: dict) -> User:
         return await utils.create_record(self.db, User, user)
 
-    async def get_users(self, page: int, limit: int) -> List[User] | None:
+    async def get_users(self, page: int, limit: int) -> Union[List[User], None]:
         return await utils.get_record_list(
             self.db,
             User,
@@ -20,5 +20,5 @@ class UserRepository:
             limit,
         )
 
-    async def get_user_by_social_id(self, social_id: int) -> User | None:
+    async def get_user_by_social_id(self, social_id: int) -> Union[User, None]:
         return await utils.get_record(self.db, User, {"social_id": social_id})
