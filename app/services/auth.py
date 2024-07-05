@@ -20,7 +20,7 @@ class AuthService:
     ):
         self.user_repository = user_repository
 
-    async def verify_token(self, token: str):
+    async def get_current_user(self, token: str):
         try:
             payload = jwt.decode(
                 token, key=CLERK_PEM_PUBLIC_KEY, algorithms=['RS256'])
@@ -28,7 +28,7 @@ class AuthService:
             user_record = await self.user_repository.get_user_by_social_id(clerk_user_id)
 
             if user_record is None:
-                user_info = await self.fetch_user_info(clerk_user_id)
+                user_info = await self.fetch_user_info_from_clerk(clerk_user_id)
                 user_dict = {
                     "social_id": clerk_user_id,
                     "email": user_info.get("email_addresses")[0].get("email_address"),
@@ -42,7 +42,7 @@ class AuthService:
         except jwt.InvalidTokenError:
             raise HTTPException(status_code=401, detail="Invalid token")
 
-    async def fetch_user_info(self, user_id: str):
+    async def fetch_user_info_from_clerk(self, user_id: str):
         response = requests.get(
             f"{CLERK_API_URL}/users/{user_id}",
             headers={"Authorization": f"Bearer {CLERK_API_KEY}"}
